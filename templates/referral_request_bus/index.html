@@ -1,0 +1,151 @@
+{% extends "referral_request_bus/base.html" %}
+
+{% block title %}Реферальные запросы{% endblock %}
+
+{% block page_title %}Управление реферальными запросами{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Список запросов</h4>
+        <div class="btn-group">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                Фильтры
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="?status=all">Все</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="?status=pending">Ожидающие</a></li>
+                <li><a class="dropdown-item" href="?status=approved">Принятые</a></li>
+                <li><a class="dropdown-item" href="?status=rejected">Отклоненные</a></li>
+            </ul>
+        </div>
+    </div>
+
+    {% if referrals %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Клиент</th>
+                    <th>Статус</th>
+                    <th>Дата</th>
+                    <th>Сообщение</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for referral in referrals %}
+                <tr>
+                    <td>{{ referral.id }}</td>
+                    <td>{{ referral.client_name or 'Не указано' }}</td>
+                    <td>
+                        <span class="badge
+                            {% if referral.status == 'pending' %}bg-warning text-dark
+                            {% elif referral.status == 'approved' %}bg-success
+                            {% else %}bg-danger
+                            {% endif %}">
+                            {{ referral.status|status_display }}
+                        </span>
+                    </td>
+                    <td>{{ referral.created_at|datetime_format }}</td>
+                    <td>{{ referral.message|default('', true) }}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            {% if referral.status == 'pending' %}
+                            <form action="{{ url_for('referral_request_bus.accept', referral_id=referral.id, business_id=business_id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-success" title="Принять">
+                                    <i class="bi bi-check-lg"></i>
+                                </button>
+                            </form>
+                            <form action="{{ url_for('referral_request_bus.reject', referral_id=referral.id, business_id=business_id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-danger" title="Отклонить">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </form>
+                            {% elif referral.status == 'approved' %}
+                            <form action="{{ url_for('referral_request_bus.cancel_accept', referral_id=referral.id, business_id=business_id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-warning" title="Отменить принятие"
+                                    onclick="return confirm('Вы уверены, что хотите отменить принятие этого запроса?')">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                            <a href="{{ url_for('referral_request_bus.details', referral_id=referral.id, business_id=business_id) }}" class="btn btn-info" title="Подробнее">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Пагинация -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page-1 }}&status={{ current_status }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for p in range(1, total_pages+1) %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link" href="?page={{ p }}&status={{ current_status }}">{{ p }}</a>
+                </li>
+                {% endfor %}
+
+                {% if page < total_pages %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page+1 }}&status={{ current_status }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        Нет реферальных запросов для отображения.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<style>
+    .table th {
+        white-space: nowrap;
+    }
+    .badge {
+        font-size: 0.85em;
+        padding: 0.35em 0.65em;
+    }
+    .btn-group-sm > .btn {
+        padding: 0.25rem 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Подтверждение действий
+document.addEventListener('DOMContentLoaded', function() {
+    const rejectForms = document.querySelectorAll('form[action*="/reject/"]');
+    rejectForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            if (!confirm('Вы уверены, что хотите отклонить этот запрос?')) {
+                e.preventDefault();
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

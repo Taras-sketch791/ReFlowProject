@@ -1,0 +1,25 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+<div class="client-dashboard">
+    <h1>Ваш личный кабинет</h1>
+    <p>Здесь вы можете находить товары и создавать реферальные ссылки</p>
+
+    <section class="businesses-section">
+        <h2>Доступные бизнесы</h2>
+        <div class="businesses-grid">
+            {% for business in businesses %}
+            <div class="business-card">
+                <div class="business-info">
+                    <h3>{{ business.title }}</h3>
+                    <p>{{ business.description }}</p>
+                    <a href="{{ url_for('client.client_products', business_id=business.id) }}" class="btn btn-green">
+                        Смотреть товары
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

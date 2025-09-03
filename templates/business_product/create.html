@@ -1,0 +1,242 @@
+{% extends "business_product/base.html" %}
+
+{% block content %}
+<div class="business-container">
+    <div class="business-header">
+        <div>
+            <a href="{{ url_for('product_bus.list_products', business_id=business_id) }}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Назад к товарам
+            </a>
+            <h1 class="business-title">Создание товара</h1>
+            <p class="business-subtitle">Добавьте новый товар в партнерскую программу</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <form method="POST" class="product-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="title">Название товара *</label>
+                        <input type="text" class="form-input" id="title" name="title" required
+                               placeholder="Введите название товара">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Цена (₽) *</label>
+                        <input type="number" step="0.01" class="form-input" id="price" name="price" required
+                               placeholder="0.00" min="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Описание товара</label>
+                    <textarea class="form-textarea" id="description" name="description" rows="4"
+                              placeholder="Подробное описание товара, характеристики, преимущества"></textarea>
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="link2product">Ссылка на товар</label>
+                        <input type="url" class="form-input" id="link2product" name="link2product"
+                               placeholder="https://example.com/product">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">URL изображения товара</label>
+                    <input type="url" class="form-input" id="image" name="image"
+                           placeholder="https://example.com/image.jpg">
+                    <span class="form-hint">Рекомендуемое соотношение: 16:9</span>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="is_available" name="is_available" checked>
+                        <label for="is_available">Товар доступен для партнеров</label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="primary-button">
+                        <i class="fas fa-plus-circle"></i> Создать товар
+                    </button>
+                    <a href="{{ url_for('product_bus.list_products', business_id=business_id) }}" class="secondary-button">
+                        <i class="fas fa-times"></i> Отмена
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.product-form {
+    padding: 2.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    color: var(--platinum-text);
+    font-size: 1rem;
+    text-shadow: 0 0 10px rgba(229, 228, 226, 0.3);
+}
+
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    background: var(--form-bg);
+    border: 1px solid var(--form-border);
+    border-radius: var(--radius-lg);
+    color: var(--form-text);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--form-border-focus);
+    box-shadow: 0 0 0 3px rgba(0, 194, 179, 0.2),
+                0 0 20px rgba(0, 194, 179, 0.1);
+    transform: translateY(-2px);
+}
+
+.form-input::placeholder, .form-textarea::placeholder {
+    color: var(--form-placeholder);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.5;
+}
+
+.form-hint {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-top: 0.5rem;
+    display: block;
+    font-style: italic;
+}
+
+.form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem;
+    background: var(--form-bg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--form-border);
+}
+
+.form-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary-blue);
+    cursor: pointer;
+}
+
+.form-checkbox label {
+    margin-bottom: 0;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--platinum-text);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1.2rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--form-border);
+    justify-content: flex-end;
+}
+
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1rem 2rem;
+    background: var(--btn-auth-gradient);
+    border: none;
+    border-radius: var(--radius-lg);
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.primary-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 194, 179, 0.4),
+                0 0 15px rgba(0, 194, 179, 0.2);
+}
+
+.secondary-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1rem 2rem;
+    background: var(--form-bg);
+    border: 1px solid var(--form-border);
+    border-radius: var(--radius-lg);
+    color: var(--platinum-text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.secondary-button:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+    border-color: var(--form-border-focus);
+}
+
+/* Адаптивность */
+@media (max-width: 968px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .product-form {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .primary-button, .secondary-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .product-form {
+        padding: 1.5rem;
+    }
+}
+</style>
+{% endblock %}

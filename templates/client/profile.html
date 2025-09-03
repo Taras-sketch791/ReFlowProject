@@ -1,0 +1,58 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Мой профиль</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">Личная информация</div>
+                <div class="card-body">
+                    <p><strong>Имя:</strong> {{ client.name }}</p>
+                    <p><strong>Email:</strong> {{ client.email }}</p>
+                    <p><strong>Телефон:</strong> {{ client.phone or 'Не указан' }}</p>
+                    <p><strong>Дата регистрации:</strong> {{ client.created_at.strftime('%d.%m.%Y') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">Статистика</div>
+                <div class="card-body">
+                    <p><strong>Реферальных ссылок:</strong> {{ stats.referrals_count }}</p>
+                    <p><strong>Переходов:</strong> {{ stats.clicks_count }}</p>
+                    <p><strong>Заработано:</strong> {{ "%.2f"|format(stats.total_earnings) }} ₽</p>
+                    <p><strong>Выведено:</strong> {{ "%.2f"|format(stats.withdrawn_amount) }} ₽</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Последние реферальные ссылки</div>
+        <div class="card-body">
+            {% if recent_links %}
+                <div class="list-group">
+                    {% for link in recent_links %}
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5>{{ link.product_name }}</h5>
+                                <a href="{{ link.link }}" target="_blank">{{ link.link }}</a>
+                            </div>
+                            <div>
+                                <img src="{{ link.qr_code }}" alt="QR Code" width="80">
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>У вас пока нет реферальных ссылок</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

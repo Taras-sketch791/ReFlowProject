@@ -1,0 +1,35 @@
+{% extends "business_product/base.html" %}
+
+{% block content %}
+<h1>Products</h1>
+<a href="{{ url_for('product_bus.create_product', business_id=business_id) }}" class="btn btn-primary">Create New Product</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.title }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ 'Available' if product.is_available else 'Unavailable' }}</td>
+            <td>
+                <a href="{{ url_for('product_bus.view_product', product_id=product.id) }}" class="btn btn-info">View</a>
+                <a href="{{ url_for('product_bus.edit_product', product_id=product.id) }}" class="btn btn-warning">Edit</a>
+                <form action="{{ url_for('product_bus.delete_product', product_id=product.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

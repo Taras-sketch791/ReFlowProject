@@ -1,0 +1,27 @@
+{% extends "business/layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Настройки оплаты</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="payment_method">Метод оплаты</label>
+            <select class="form-control" id="payment_method" name="payment_method" required>
+                {% for method in payment_methods %}
+                <option value="{{ method }}"
+                    {% if current_settings and current_settings.payment_method == method %}selected{% endif %}>
+                    {{ method }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="account_details">Реквизиты для оплаты</label>
+            <textarea class="form-control" id="account_details" name="account_details" rows="3" required>
+                {% if current_settings %}{{ current_settings.account_details }}{% endif %}
+            </textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
+{% endblock %}

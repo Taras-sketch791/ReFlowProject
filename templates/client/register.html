@@ -1,0 +1,29 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+<div class="auth-container client-theme">
+    <div class="auth-form">
+        <h2>Регистрация реферала</h2>
+        <form action="{{ url_for('auth.client_register') }}" method="POST">
+            <div class="form-group">
+                <label for="name">Ваше имя</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Подтвердите пароль</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+            </div>
+            <button type="submit" class="btn btn-green">Зарегистрироваться</button>
+        </form>
+        <p>Уже есть аккаунт? <a href="{{ url_for('auth.client_login') }}">Войти</a></p>
+    </div>
+</div>
+{% endblock %}

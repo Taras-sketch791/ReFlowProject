@@ -1,0 +1,36 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+<div class="client-products">
+    <div class="header">
+        <h1>Товары {{ business.name }}</h1>
+        <a href="{{ url_for('client.client_dashboard') }}" class="btn btn-gray">← Назад</a>
+    </div>
+
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <div class="product-info">
+                <h3>{{ product.name }}</h3>
+                <p class="price">{{ product.price }} ₽</p>
+                <p class="referral-percent">Реферальный процент: {{ product.referral_percent }}%</p>
+
+                {% if product.referral_id %}
+                    <a href="{{ url_for('client.view_referral', product_id=product.id) }}"
+                       class="btn btn-green">
+                        Показать реферал
+                    </a>
+                {% else %}
+                    <form method="POST" action="{{ url_for('client.client_products', business_id=business.id) }}">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <button type="submit" class="btn btn-green">
+                            Создать реферал
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

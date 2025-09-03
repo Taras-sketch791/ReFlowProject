@@ -1,0 +1,33 @@
+{% extends "business/business.html" %}
+
+{% block content %}
+<div class="auth-container business-theme">
+    <div class="auth-form">
+        <h2>Регистрация бизнеса</h2>
+        <form action="{{ url_for('auth.business_register') }}" method="POST">
+            <div class="form-group">
+                <label for="title">Название компании</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="inn">ИНН</label>
+                <input type="text" id="inn" name="inn" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Подтвердите пароль</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+            </div>
+            <button type="submit" class="btn btn-blue">Зарегистрироваться</button>
+        </form>
+        <p>Уже есть аккаунт? <a href="{{ url_for('auth.business_login') }}">Войти</a></p>
+    </div>
+</div>
+{% endblock %}

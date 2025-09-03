@@ -1,0 +1,25 @@
+{% extends "business_product/base.html" %}
+
+{% block content %}
+<h1>{{ product.title }}</h1>
+
+<div class="card">
+    <div class="card-body">
+        <p class="card-text">{{ product.description }}</p>
+        <p class="card-text"><strong>Price:</strong> {{ product.price }}</p>
+        <p class="card-text"><strong>Referral Percent:</strong> {{ product.referral_percent }}%</p>
+        <p class="card-text"><strong>Status:</strong> {{ 'Available' if product.is_available else 'Unavailable' }}</p>
+        {% if product.link2product %}
+        <p class="card-text"><strong>Product Link:</strong> <a href="{{ product_bus.link2product }}" target="_blank">{{ product.link2product }}</a></p>
+        {% endif %}
+
+        <div class="mt-3">
+            <a href="{{ url_for('product_bus.edit_product', product_id=product.id) }}" class="btn btn-warning">Edit</a>
+            <form action="{{ url_for('product_bus.delete_product', product_id=product.id) }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+            </form>
+            <a href="{{ url_for('product_bus.list_products', business_id=product.business_id) }}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

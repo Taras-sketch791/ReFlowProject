@@ -1,0 +1,56 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+<div class="referral-created">
+    <h1>Ваша реферальная ссылка готова!</h1>
+
+    <div class="referral-card">
+        <div class="product-info">
+            <h2>{{ product.title }}</h2>
+            <p class="price">{{ product.price }} ₽</p>
+            <p class="commission">Ваша комиссия: {{ product.referral_percent }}%</p>
+        </div>
+
+        <div class="referral-link">
+            <input type="text" value="{{ referral.link }}" id="referral-link" readonly>
+            <button onclick="copyToClipboard('referral-link')" class="btn btn-copy">
+                Копировать
+            </button>
+        </div>
+
+        <div class="qr-code">
+            <img src="{{ referral.qr_code }}" alt="QR-код">
+            <p>Отсканируйте QR-код для быстрого доступа</p>
+        </div>
+
+        <div class="social-share">
+            <p>Поделиться:</p>
+            <a href="#" class="social-icon">📱</a>
+            <a href="#" class="social-icon">📧</a>
+            <a href="#" class="social-icon">📘</a>
+            <a href="#" class="social-icon">📱</a>
+        </div>
+    </div>
+
+    <a href="{{ url_for('client_referrals') }}" class="btn btn-back">
+        К списку ссылок
+    </a>
+</div>
+
+<script>
+function copyToClipboard(elementId) {
+    const copyText = document.getElementById(elementId);
+    copyText.select();
+    document.execCommand("copy");
+
+    // Показываем уведомление
+    const btn = document.querySelector('.btn-copy');
+    const originalText = btn.textContent;
+    btn.textContent = 'Скопировано!';
+
+    setTimeout(() => {
+        btn.textContent = originalText;
+    }, 2000);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+<div class="client-withdraw">
+    <div class="withdraw-header">
+        <h1>Вывод средств</h1>
+        <a href="{{ url_for('client_profile') }}" class="btn btn-outline-green">← Назад</a>
+    </div>
+
+    <div class="balance-card">
+        <div class="balance-label">Доступно для вывода</div>
+        <div class="balance-amount">{{ "%.2f"|format(balance) }} ₽</div>
+    </div>
+
+    <form method="POST" class="withdraw-form">
+        <div class="form-group">
+            <label for="amount">Сумма вывода (₽)</label>
+            <input type="number" id="amount" name="amount" step="0.01" min="0.01" max="{{ balance }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="payment_method">Способ выплаты</label>
+            <select id="payment_method" name="payment_method" required>
+                {% if payment_methods %}
+                    {% for method in payment_methods %}
+                        <option value="{{ method.payment_details }}">{{ method.payment_details|truncate(30) }}</option>
+                    {% endfor %}
+                {% else %}
+                    <option value="" disabled selected>Сначала укажите реквизиты в настройках</option>
+                {% endif %}
+            </select>
+        </div>
+
+        <div class="form-notice">
+            <p>Вывод средств осуществляется в течение 3-5 рабочих дней</p>
+            <p>Минимальная сумма вывода: 500 ₽</p>
+        </div>
+
+        <button type="submit" class="btn btn-green" {% if not payment_methods %}disabled{% endif %}>
+            Запросить вывод
+        </button>
+    </form>
+
+    <div class="withdraw-history">
+        <h2>История выводов</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Сумма</th>
+                    <th>Способ</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Пример записи -->
+                <tr>
+                    <td>15.05.2023</td>
+                    <td>1500.00 ₽</td>
+                    <td>Карта *1234</td>
+                    <td class="status-completed">Выполнен</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

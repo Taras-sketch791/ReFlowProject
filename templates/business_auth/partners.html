@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Партнеры - ReFlow</title>
+    <link rel="stylesheet" href="static/css/base_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="business-container">
+            <div class="business-header">
+                <div>
+                    <a href="{{ url_for('business_auth.dashboard', business_id=39) }}" class="back-button">
+                        <i class="fas fa-arrow-left"></i> Назад
+                    </a>
+                    <h1 class="business-title">Партнеры</h1>
+                    <p class="business-subtitle">Управление вашими партнерами и приглашение новых</p>
+                </div>
+                <button class="primary-button">
+                    <i class="fas fa-plus"></i> Пригласить партнера
+                </button>
+            </div>
+
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label for="status">Статус</label>
+                    <select id="status" class="filter-select">
+                        <option value="all" selected>Все статусы</option>
+                        <option value="active">Активные</option>
+                        <option value="inactive">Неактивные</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="search">Поиск</label>
+                    <input type="text" id="search" class="filter-input" placeholder="Имя или email">
+                </div>
+
+                <button class="primary-button">Применить</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Всего партнеров</div>
+                </div>
+
+                <div class="card stat-card">
+                    <div class="stat-value">28</div>
+                    <div class="stat-label">Активных партнеров</div>
+                </div>
+
+                <div class="card stat-card">
+                    <div class="stat-value">257 843 ₽</div>
+                    <div class="stat-label">Общий доход</div>
+                </div>
+            </div>
+
+            <div class="card data-table-container">
+                <h3>Список партнеров</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Партнер</th>
+                            <th>Площадки</th>
+                            <th>Статус</th>
+                            <th>Продажи</th>
+                            <th>Доход</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Иван Петров</td>
+                            <td>Telegram, Instagram</td>
+                            <td><span class="status status-active">Активный</span></td>
+                            <td>128</td>
+                            <td>45 800 ₽</td>
+                            <td>
+                                <button class="action-button" title="Написать">
+                                    <i class="fas fa-comment"></i>
+                                </button>
+                                <button class="action-button" title="Статистика">
+                                    <i class="fas fa-chart-bar"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Мария Сидорова</td>
+                            <td>YouTube, ВКонтакте</td>
+                            <td><span class="status status-active">Активный</span></td>
+                            <td>87</td>
+                            <td>32 150 ₽</td>
+                            <td>
+                                <button class="action-button" title="Написать">
+                                    <i class="fas fa-comment"></i>
+                                </button>
+                                <button class="action-button" title="Статистика">
+                                    <i class="fas fa-chart-bar"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <button class="pagination-button">&laquo;</button>
+                    <button class="pagination-button active">1</button>
+                    <button class="pagination-button">2</button>
+                    <button class="pagination-button">3</button>
+                    <button class="pagination-button">&raquo;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

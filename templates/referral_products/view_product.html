@@ -1,0 +1,158 @@
+{% extends "referral_products/base.html" %}
+
+{% block title %}{{ product.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3>{{ product.title }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5>Описание</h5>
+                        <p>{{ product.description }}</p>
+                        {% if is_approved and referral_link %}
+                        <div class="mt-4 p-3 border rounded bg-light">
+                            <h5>Ваша реферальная ссылка</h5>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="referralLink"
+                                       value="{{ referral_link }}" readonly>
+                                <button class="btn btn-outline-secondary" onclick="copyLink()">
+                                    Копировать
+                                </button>
+                            </div>
+                            {% if qr_code %}
+                            <div class="text-center mt-3">
+                                <img src="data:image/png;base64,{{ qr_code }}"
+                                     alt="QR-код реферальной ссылки"
+                                     class="img-fluid" style="max-width: 200px;">
+                                <p class="mt-2">Отсканируйте QR-код для быстрого доступа</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="mt-4 p-3 border rounded bg-light">
+                            <h5>Ваша реферальная ссылка на Телеграм</h5>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="telegramLink"
+                                       value="{{ telegram_link }}" readonly>
+                                <button class="btn btn-outline-secondary" onclick="copyLink()">
+                                    Копировать
+                                </button>
+                            </div>
+                            {% if qr_code %}
+                            <div class="text-center mt-3">
+                                <img src="data:image/png;base64,{{ telegram_qr }}"
+                                     alt="QR-код реферальной ссылки"
+                                     class="img-fluid" style="max-width: 200px;">
+                                <p class="mt-2">Отсканируйте QR-код для быстрого доступа</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Информация о продукте</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <strong>Цена:</strong> {{ "%.2f"|format(product.price) }} ₽
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Реферальный процент:</strong> {{ product.referral_percent }}%
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Статус:</strong>
+                                    <span class="badge bg-{{ 'success' if product.is_available else 'secondary' }}">
+                                        {{ 'Доступен' if product.is_available else 'Недоступен' }}
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Информация о бизнесе</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <strong>Бизнес:</strong> {{ business.title }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>ID бизнеса:</strong> {{ business.id }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <a href="{{ product.link2product }}"
+                       class="btn btn-outline-primary me-2"
+                       target="_blank">
+                        Перейти к продукту
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5>Реферальная программа</h5>
+                </div>
+                <div class="card-body">
+                    <p>Вы получите {{ product.referral_percent }}% с каждой продажи по вашей ссылке</p>
+                    {% if is_approved %}
+                        {% if qr_code %}
+                        <div class="alert alert-success">
+                            ✅ QR-код уже создан для этого продукта
+                        </div>
+                        <div class="text-center">
+                            <img src="data:image/png;base64,{{ qr_code }}"
+                                 alt="QR-код" class="img-fluid" style="max-width: 150px;">
+                        </div>
+                        {% else %}
+                        <form method="POST"
+                              action="{{ url_for('referral_products.generate_qr_code',
+                                              referral_id=referral_id, product_id=product.id) }}">
+                            <button type="submit" class="btn btn-success w-100">
+                                📷 Создать QR-код
+                            </button>
+                        </form>
+                        {% endif %}
+                    {% else %}
+                        <div class="alert alert-warning">
+                            ⏳ Ваша заявка на сотрудничество ожидает подтверждения
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h5>Быстрые действия</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{{ url_for('referral_products.business_products', business_id=business.id, referral_id=referral_id) }}"
+                       class="btn btn-outline-secondary w-100 mb-2">
+                        Все продукты этого бизнеса
+                    </a>
+                    <a href="{{ url_for('referral_products.list_businesses', referral_id=referral_id) }}"
+                       class="btn btn-outline-secondary w-100">
+                        Все доступные бизнесы
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyLink() {
+    const copyText = document.getElementById("referralLink");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("Ссылка скопирована: " + copyText.value);
+}
+</script>
+{% endblock %}

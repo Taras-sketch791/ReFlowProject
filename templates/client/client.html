@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block header %}
+        <nav>
+            <a href="{{ url_for('index') }}">Главная</a>
+            {% if 'client_id' in session %}
+                <a href="{{ url_for('client.client_dashboard') }}" class="auth-button" style="background-color: #a7f3d0; color: #065f46;">
+                    Мой кабинет
+                </a>
+                <a href="{{ url_for('client.client_profile') }}" class="auth-button" style="background-color: #a7f3d0; color: #065f46;">
+                    Профиль
+                </a>
+                <a href="{{ url_for('auth.client_logout') }}" class="auth-button">Выйти</a>
+            {% endif %}
+        </nav>
+{% endblock %}
+
+{% block cont %}
+
+
+{% block content %} {% endblock %}
+
+{% endblock %}

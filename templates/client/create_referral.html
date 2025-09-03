@@ -1,0 +1,24 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+<div class="create-referral">
+    <div class="header">
+        <h1>Создание реферальной ссылки</h1>
+        <a href="{{ url_for('client_products', business_id=product.business_id) }}" class="btn btn-gray">← Назад</a>
+    </div>
+
+    <div class="product-info">
+        <h2>{{ product.title }}</h2>
+        <p>{{ product.description }}</p>
+        <p>Вы получите {{ product.referral_percent }}% с каждой покупки</p>
+    </div>
+
+    <form method="POST" class="referral-form">
+        <div class="form-group">
+            <label for="promo_code">Ваш промокод (необязательно)</label>
+            <input type="text" id="promo_code" name="promo_code" placeholder="Придумайте промокод">
+        </div>
+        <button type="submit" class="btn btn-green">Создать ссылку</button>
+    </form>
+</div>
+{% endblock %}

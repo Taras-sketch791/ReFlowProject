@@ -1,0 +1,71 @@
+{% extends "referral_products/base.html" %}
+
+{% block title %}Продукты {{ business.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show mt-3">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Продукты бизнеса: {{business.title}}</h2>
+        <form action="{{ url_for('referral_products.request_partnership', business_id=business.id, referral_id=referral_id) }}" method="POST">
+            <button type="submit" class="btn btn-outline-secondary">
+                Подать запрос на сотрудничество
+            </button>
+        </form>
+        <a href="{{ url_for('referral_products.list_businesses', referral_id=referral_id) }}" class="btn btn-outline-secondary">
+            Назад к бизнесам
+        </a>
+    </div>
+
+    {% if products %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Реф. %</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.title }}</td>
+                    <td>{{ "%.2f"|format(product.price) }} ₽</td>
+                    <td>{{ product.referral_percent }}%</td>
+                    <td>
+                        <span class="badge bg-{{ 'success' if product.is_available else 'secondary' }}">
+                            {{ 'Доступен' if product.is_available else 'Недоступен' }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{{ url_for('referral_products.view_product', product_id=product.id, referral_id=referral_id) }}"
+                               class="btn btn-sm btn-outline-primary">
+                                Подробнее
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        У этого бизнеса пока нет доступных продуктов
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block cont %}
+<div class="hero">
+    <h1>Привлекайте клиентов и зарабатывайте на рекомендациях</h1>
+    <p>Платформа для создания реферальных программ и монетизации вашей аудитории</p>
+
+    <div class="role-selection">
+        <h2>Выберите вашу роль:</h2>
+        <div class="buttons">
+            <a href="{{ url_for('auth.business_login') }}" class="btn btn-blue">Я бизнес</a>
+            <a href="{{ url_for('auth.client_login') }}" class="btn btn-green">Я реферал</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

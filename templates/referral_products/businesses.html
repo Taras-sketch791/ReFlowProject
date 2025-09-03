@@ -1,0 +1,40 @@
+{% extends "referral_products/base.html" %}
+
+{% block title %}Доступные бизнесы{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-4">Доступные бизнесы</h2>
+
+    {% if businesses %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for business in businesses %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">{{ business.title }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ business.description|truncate(100) }}</p>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">ID: {{ business.id }}</li>
+                        <li class="list-group-item">Продуктов: {{ business.products_count }}</li>
+                    </ul>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{{ url_for('referral_products.business_products', business_id=business.id, referral_id=referral_id) }}"
+                       class="btn btn-primary w-100">
+                        Смотреть продукты
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        Нет доступных бизнесов для отображения
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Рефералы</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Email</th>
+                <th>Телефон</th>
+                <th>Реферальный код</th>
+                <th>Кол-во рефералов</th>
+                <th>Приглашен</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for referral in referrals %}
+            <tr>
+                <td>{{ referral.id }}</td>
+                <td>{{ referral.name }}</td>
+                <td>{{ referral.email }}</td>
+                <td>{{ referral.phone }}</td>
+                <td>{{ referral.referral_code }}</td>
+                <td>{{ referral.referral_count }}</td>
+                <td>{{ referral.referrer_name if referral.referrer_name else 'Нет' }}</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-info">Просмотр</a>
+                    <a href="#" class="btn btn-sm btn-warning">Редактировать</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% include 'partials/pagination.html' %}
+</div>
+{% endblock %}

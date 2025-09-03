@@ -1,0 +1,47 @@
+{% extends "referral_auth/base_partner_auth.html" %}
+
+{% block title %}Вход для Партнеров{% endblock %}
+
+{% block auth_content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Вход для Партнеров</h1>
+            <p>Войдите в свой аккаунт для управления партнерской программой</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="auth-form">
+            <div class="form-group">
+                <label for="phone" class="form-label">Номер телефона</label>
+                <input type="tel" class="form-control" id="phone" name="phone" required
+                       placeholder="Введите ваш email">
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="password" name="password" required 
+                       placeholder="Введите ваш пароль">
+            </div>
+
+            <button type="submit" class="auth-btn auth-btn-primary">
+                Войти в аккаунт
+            </button>
+        </form>
+
+        <div class="auth-links">
+            <p>Нет аккаунта? <a href="{{ url_for('referral_auth.register_page') }}">Присоединиться к партнерской программе</a></p>
+            <p><a href="#">Забыли пароль?</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

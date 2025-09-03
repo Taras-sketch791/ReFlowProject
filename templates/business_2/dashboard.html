@@ -1,0 +1,32 @@
+{% extends "business/business.html" %}
+
+{% block content %}
+<div class="business-dashboard">
+    <div class="dashboard-header">
+        <h1>Панель управления бизнесом</h1>
+        <a href="{{ url_for('business.new_product') }}" class="btn btn-blue">+ Добавить товар</a>
+    </div>
+
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            {% if product.image %}
+            <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.title }}" class="product-image">
+            {% else %}
+            <div class="product-image-placeholder"></div>
+            {% endif %}
+            <div class="product-info">
+                <h3>{{ product.title }}</h3>
+                <p class="price">{{ product.price }} ₽</p>
+                <p class="referral-percent">Реферальный процент: {{ product.referral_percent }}%</p>
+                <p class="description">{{ product.description }}</p>
+                <div class="product-actions">
+                    <a href="#" class="btn btn-small btn-blue">Редактировать</a>
+                    <a href="#" class="btn btn-small btn-red">Удалить</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

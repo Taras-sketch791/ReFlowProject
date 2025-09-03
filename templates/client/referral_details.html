@@ -1,0 +1,191 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-link me-2"></i>
+                        Реферальные ссылки для {{ referral.product_name }}
+                    </h2>
+                </div>
+
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-store fa-2x text-secondary"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h3 class="h5 mb-1">{{ referral.business_name }}</h3>
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-calendar-alt me-1"></i>
+                                Создано: {{ referral.created_at.strftime('%d.%m.%Y') }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Основная реферальная ссылка -->
+                        <div class="col-md-6 mb-4">
+                            <div class="h-100 p-4 bg-light rounded-3">
+                                <h4 class="h5 mb-3 text-center">
+                                    <i class="fas fa-globe me-2"></i>Основная ссылка
+                                </h4>
+                                <label class="form-label fw-bold">Реферальная ссылка:</label>
+                                <div class="input-group mb-3">
+                                    <input type="text"
+                                           class="form-control"
+                                           value="{{ referral.link }}"
+                                           id="mainReferralLink"
+                                           readonly>
+                                    <button class="btn btn-primary"
+                                            type="button"
+                                            onclick="copyToClipboard('mainReferralLink')">
+                                        <i class="fas fa-copy me-1"></i> Копировать
+                                    </button>
+                                </div>
+
+                                {% if referral.qr_code %}
+                                <div class="text-center mt-3">
+                                    <div class="p-3 bg-white border rounded d-inline-block">
+                                        <p class="fw-bold mb-2">QR-код:</p>
+                                        <img src="{{ referral.qr_code }}"
+                                             class="img-thumbnail border-0"
+                                             style="width: 150px; height: 150px;"
+                                             alt="QR-код основной ссылки">
+                                        <div class="mt-2">
+                                            <a href="{{ referral.qr_code }}"
+                                               download="qr-code-{{ referral.product_name|replace(' ', '-')|lower }}.png"
+                                               class="btn btn-sm btn-outline-secondary">
+                                                <i class="fas fa-download me-1"></i> Скачать
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Ссылка для Telegram бота -->
+                        <div class="col-md-6 mb-4">
+                            <div class="h-100 p-4 bg-light rounded-3">
+                                <h4 class="h5 mb-3 text-center">
+                                    <i class="fab fa-telegram me-2"></i>Для Telegram бота
+                                </h4>
+                                <label class="form-label fw-bold">Telegram ссылка:</label>
+                                <div class="input-group mb-3">
+                                    <input type="text"
+                                           class="form-control"
+                                           value="{{ telegram_link }}"
+                                           id="tgReferralLink"
+                                           readonly>
+                                    <button class="btn btn-primary"
+                                            type="button"
+                                            onclick="copyToClipboard('tgReferralLink')">
+                                        <i class="fas fa-copy me-1"></i> Копировать
+                                    </button>
+                                </div>
+
+                                <div class="text-center mt-3">
+                                    <div class="p-3 bg-white border rounded d-inline-block">
+                                        <p class="fw-bold mb-2">QR-код:</p>
+                                        <img src="{{ telegram_qr }}"
+                                             class="img-thumbnail border-0"
+                                             style="width: 150px; height: 150px;"
+                                             alt="QR-код для Telegram">
+                                        <div class="mt-2">
+                                            <a href="{{ telegram_qr }}"
+                                               download="qr-code-telegram-{{ referral.product_name|replace(' ', '-')|lower }}.png"
+                                               class="btn btn-sm btn-outline-secondary">
+                                                <i class="fas fa-download me-1"></i> Скачать
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{{ url_for('client.client_products', business_id=referral.business_id) }}"
+                           class="btn btn-outline-secondary me-md-2">
+                            <i class="fas fa-arrow-left me-1"></i> Назад к товарам
+                        </a>
+                        <a href="{{ referral.link }}"
+                           target="_blank"
+                           class="btn btn-success">
+                            <i class="fas fa-external-link-alt me-1"></i> Перейти по ссылке
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card-body {
+        text-align: left;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .text-start {
+        text-align: left;
+    }
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    .card-header {
+        border-radius: 15px 15px 0 0 !important;
+    }
+    #mainReferralLink, #tgReferralLink {
+        background-color: #f8f9fa;
+        font-family: 'Courier New', monospace;
+    }
+    .bg-light {
+        background-color: #f8f9fa !important;
+    }
+</style>
+
+<script>
+function copyToClipboard(elementId) {
+    const copyText = document.getElementById(elementId);
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(copyText.value).then(() => {
+        // Toast-уведомление
+        const toastEl = document.getElementById('copyToast');
+        const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+        toast.show();
+
+        // Временное изменение текста в поле ввода
+        const originalText = copyText.value;
+        copyText.value = "Скопировано!";
+        setTimeout(() => {
+            copyText.value = originalText;
+        }, 2000);
+    }).catch(err => {
+        console.error('Ошибка при копировании: ', err);
+    });
+}
+</script>
+
+<!-- Toast для уведомления о копировании -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="copyToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+        <div class="toast-header bg-success text-white">
+            <strong class="me-auto">Успешно</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Ссылка скопирована в буфер обмена!
+        </div>
+    </div>
+</div>
+{% endblock %}

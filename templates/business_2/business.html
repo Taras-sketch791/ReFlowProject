@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block header %}
+        <nav>
+            <a href="{{ url_for('index') }}">Главная</a>
+            {% if 'business_id' in session %}
+                <a href="{{ url_for('business.business_dashboard') }}" class="auth-button">Личный кабинет</a>
+                <a href="{{ url_for('auth.business_logout') }}" class="auth-button">Выйти</a>
+            {% endif %}
+        </nav>
+{% endblock %}
+
+{% block cont %}
+{% block content %} {% endblock %}
+{% endblock %}

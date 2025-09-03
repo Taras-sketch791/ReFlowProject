@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Продажи - ReFlow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Базовые стили из base_styles.css */
+        :root {
+            --color-primary: #000000;
+            --color-secondary: #1a1a2e;
+            --color-accent: #16213e;
+            --color-text-primary: #ffffff;
+            --color-text-secondary: #cccccc;
+            --color-text-muted: #888888;
+            --primary-blue: #00C2B3;
+            --accent-orange: #3F114A;
+            --accent-cyan: #00C2B3;
+            --dark-gray: #1B1B41;
+            --mid-gray: #6B7280;
+            --light-gray: #1B1B41;
+            --white: #FFFFFF;
+            --primary-hover: #00C2B3;
+            --accent-orange-hover: #360940;
+            --accent-cyan-hover: #008273;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --font-primary: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            --bg-dark: #0C0B1C;
+            --platinum-text: #E5E4E2;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(200, 200, 200, 0.2);
+            --glass-shadow: 0 8px 32px #1B1B41;
+            --auth-card-bg: rgba(27, 27, 65, 0.95);
+            --auth-card-border: rgba(0, 194, 179, 0.3);
+            --auth-card-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            --form-bg: rgba(255, 255, 255, 0.08);
+            --form-border: rgba(255, 255, 255, 0.2);
+            --form-border-focus: rgba(0, 194, 179, 0.6);
+            --form-text: #ffffff;
+            --form-placeholder: rgba(255, 255, 255, 0.6);
+            --btn-auth-bg: var(--primary-blue);
+            --btn-auth-hover: var(--accent-cyan);
+            --btn-auth-gradient: linear-gradient(135deg, var(--primary-blue), var(--accent-cyan));
+            --auth-card-width: 450px;
+            --auth-card-padding: 2.5rem;
+            --form-input-height: 55px;
+            --form-input-padding: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--platinum-text);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 50%, var(--color-accent) 100%);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--platinum-text);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--platinum-text);
+        }
+
+        /* Стили для карточек */
+        .card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.12) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 10px 20px rgba(0, 0, 0, 0.5),
+                        inset 2px 2px 5px rgba(255, 255, 255, 0.15),
+                        inset -2px -2px 5px rgba(0, 0, 0, 0.4),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.9), 0 15px 30px rgba(0, 0, 0, 0.6),
+                        inset 3px 3px 8px rgba(255, 255, 255, 0.2),
+                        inset -3px -3px 8px rgba(0, 0, 0, 0.5),
+                        0 0 0 2px rgba(255, 255, 255, 0.15);
+        }
+
+        /* Стили для страницы продаж */
+        .sales-dashboard {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .sales-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem 0;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.2rem;
+            background: var(--auth-card-bg);
+            border: 1px solid var(--auth-card-border);
+            border-radius: var(--radius-md);
+            color: var(--platinum-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 194, 179, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+
+        .filter-select, .filter-input {
+            padding: 0.7rem 1rem;
+            background: var(--form-bg);
+            border: 1px solid var(--form-border);
+            border-radius: var(--radius-md);
+            color: var(--form-text);
+            min-width: 150px;
+        }
+
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: var(--form-border-focus);
+        }
+
+        .apply-filters {
+            padding: 0.7rem 1.5rem;
+            background: var(--btn-auth-gradient);
+            border: none;
+            border-radius: var(--radius-md);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            align-self: flex-end;
+            transition: all 0.3s ease;
+        }
+
+        .apply-filters:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 194, 179, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--platinum-text);
+            font-size: 0.9rem;
+        }
+
+        .stat-change {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .positive {
+            color: #10b981;
+        }
+
+        .negative {
+            color: #ef4444;
+        }
+
+        .table-container {
+            margin-top: 2rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th, .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table th {
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .data-table th:hover {
+            color: var(--primary-blue);
+        }
+
+        .data-table tr {
+            transition: background-color 0.3s ease;
+        }
+
+        .data-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .status {
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-completed {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-pending {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .status-canceled {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination-button {
+            padding: 0.5rem 1rem;
+            background: var(--form-bg);
+            border: 1px solid var(--form-border);
+            border-radius: var(--radius-md);
+            color: var(--platinum-text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-button:hover {
+            background: rgba(0, 194, 179, 0.2);
+        }
+
+        .pagination-button.active {
+            background: var(--btn-auth-gradient);
+            color: white;
+        }
+
+        .export-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.5rem;
+            background: var(--btn-auth-gradient);
+            border: none;
+            border-radius: var(--radius-md);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .export-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 194, 179, 0.3);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .filters {
+                flex-direction: column;
+            }
+
+            .filter-select, .filter-input {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sales-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sales-dashboard">
+            <!-- Заголовок -->
+            <div class="sales-header">
+                <div>
+                    <a href="{{ url_for('business_auth.dashboard') }}" class="back-button">
+                        <i class="fas fa-arrow-left"></i> Назад
+                    </a>
+                    <h1>Продажи</h1>
+                    <p>Детальная информация о всех ваших продажах через партнерскую программу</p>
+                </div>
+                <button class="export-button">
+                    <i class="fas fa-download"></i> Экспорт отчета
+                </button>
+            </div>
+
+            <!-- Фильтры -->
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="period">Период</label>
+                    <select id="period" class="filter-select">
+                        <option value="7">Последние 7 дней</option>
+                        <option value="30" selected>Последние 30 дней</option>
+                        <option value="90">Последние 90 дней</option>
+                        <option value="365">За год</option>
+                        <option value="custom">Произвольный период</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="partner">Партнер</label>
+                    <select id="partner" class="filter-select">
+                        <option value="all" selected>Все партнеры</option>
+                        <option value="1">Иван Петров</option>
+                        <option value="2">Мария Сидорова</option>
+                        <option value="3">Алексей Козлов</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="status">Статус</label>
+                    <select id="status" class="filter-select">
+                        <option value="all" selected>Все статусы</option>
+                        <option value="completed">Завершено</option>
+                        <option value="pending">В обработке</option>
+                        <option value="canceled">Отменено</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="search">Поиск</label>
+                    <input type="text" id="search" class="filter-input" placeholder="ID заказа или товар">
+                </div>
+
+                <button class="apply-filters">Применить</button>
+            </div>
+
+            <!-- Статистика -->
+            <div class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-value">128</div>
+                    <div class="stat-label">Всего продаж</div>
+                    <div class="stat-change positive">+8.3% за период</div>
+                </div>
+
+                <div class="card stat-card">
+                    <div class="stat-value">257 843 ₽</div>
+                    <div class="stat-label">Общая сумма</div>
+                    <div class="stat-change positive">+12.5% за период</div>
+                </div>
+
+                <div class="card stat-card">
+                    <div class="stat-value">2 014 ₽</div>
+                    <div class="stat-label">Средний чек</div>
+                    <div class="stat-change negative">-1.2% за период</div>
+                </div>
+
+                <div class="card stat-card">
+                    <div class="stat-value">15.7%</div>
+                    <div class="stat-label">Конверсия</div>
+                    <div class="stat-change positive">+2.1% за период</div>
+                </div>
+            </div>
+
+            <!-- Таблица с продажами -->
+            <div class="card table-container">
+                <h3>Детализация продаж</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID заказа <i class="fas fa-sort"></i></th>
+                            <th>Дата <i class="fas fa-sort"></i></th>
+                            <th>Партнер <i class="fas fa-sort"></i></th>
+                            <th>Товар</th>
+                            <th>Количество</th>
+                            <th>Сумма <i class="fas fa-sort"></i></th>
+                            <th>Комиссия <i class="fas fa-sort"></i></th>
+                            <th>Статус <i class="fas fa-sort"></i></th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#ORD-78945</td>
+                            <td>12.05.2023</td>
+                            <td>Иван Петров</td>
+                            <td>Смартфон X200</td>
+                            <td>2</td>
+                            <td>45 800 ₽</td>
+                            <td>2 290 ₽</td>
+                            <td><span class="status status-completed">Завершено</span></td>
+                            <td>
+                                <button class="action-button" title="Детали">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-78944</td>
+                            <td>11.05.2023</td>
+                            <td>Мария Сидорова</td>
+                            <td>Ноутбук ProBook</td>
+                            <td>1</td>
+                            <td>87 500 ₽</td>
+                            <td>4 375 ₽</td>
+                            <td><span class="status status-completed">Завершено</span></td>
+                            <td>
+                                <button class="action-button" title="Детали">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-78943</td>
+                            <td>10.05.2023</td>
+                            <td>Алексей Козлов</td>
+                            <td>Наушники SoundMax</td>
+                            <td>5</td>
+                            <td>24 950 ₽</td>
+                            <td>1 247 ₽</td>
+                            <td><span class="status status-completed">Завершено</span></td>
+                            <td>
+                                <button class="action-button" title="Детали">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-78942</td>
+                            <td>09.05.2023</td>
+                            <td>Иван Петров</td>
+                            <td>Смартфон X200</td>
+                            <td>1</td>
+                            <td>22 900 ₽</td>
+                            <td>1 145 ₽</td>
+                            <td><span class="status status-completed">Завершено</span></td>
+                            <td>
+                                <button class="action-button" title="Детали">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-78941</td>
+                            <td>08.05.2023</td>
+                            <td>Мария Сидорova</td>
+                            <td>Ноутбук ProBook</td>
+                            <td>2</td>
+                            <td>175 000 ₽</td>
+                            <td>8 750 ₽</td>
+                            <td><span class="status status-pending">В обработке</span></td>
+                            <td>
+                                <button class="action-button" title="Детали">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-78940</td>
+                            <td>07.05.2023</td>
+                            <td>Ольга Новикова</td>
+                            <td>Планшет TabPro</td>
+                            <td>1</td>
+                            <td>34 500 ₽</td>
+                            <td>1 725 ₽</td>
+                            <td><span class="status status-completed">Завершено</span></td>
+                            <td>
+                                <button class="action-button" title="Детали">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-78939</td>
+                            <td>06.05.2023</td>
+                            <td>Дмитрий Волков</td>
+                            <td>Монитор UltraView</td>
+                            <td>3</td>
+                            <td>87 000 ₽</td>
+                            <td>4 350 ₽</td>
+                            <td><span class="status status-canceled">Отменено</span></td>
+                            <td>
+                                <button class="action-button" title="Детали">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Пагинация -->
+                <div class="pagination">
+                    <button class="pagination-button">&laquo;</button>
+                    <button class="pagination-button active">1</button>
+                    <button class="pagination-button">2</button>
+                    <button class="pagination-button">3</button>
+                    <button class="pagination-button">&raquo;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Обработчики для сортировки таблицы
+            const tableHeaders = document.querySelectorAll('.data-table th');
+            tableHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const index = Array.from(this.parentElement.children).indexOf(this);
+                    const table = this.closest('table');
+                    const tbody = table.querySelector('tbody');
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+                    // Простая сортировка (в реальном проекте нужно реализовать полноценную)
+                    rows.sort((a, b) => {
+                        const aValue = a.children[index].textContent;
+                        const bValue = b.children[index].textContent;
+
+                        if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
+                            return parseFloat(aValue) - parseFloat(bValue);
+                        }
+
+                        return aValue.localeCompare(bValue);
+                    });
+
+                    // Удаляем старые строки
+                    while (tbody.firstChild) {
+                        tbody.removeChild(tbody.firstChild);
+                    }
+
+                    // Добавляем отсортированные строки
+                    rows.forEach(row => tbody.appendChild(row));
+                });
+            });
+
+            // Обработчик для кнопки применения фильтров
+            document.querySelector('.apply-filters').addEventListener('click', function() {
+                alert('Фильтры применены. В реальном проекте здесь будет загрузка данных с сервера.');
+            });
+
+            // Обработчик для кнопки экспорта
+            document.querySelector('.export-button').addEventListener('click', function() {
+                alert('Отчет готовится к экспорту...');
+            });
+
+            // Обработчики для кнопок пагинации
+            document.querySelectorAll('.pagination-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.pagination-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+            // Обработчики для кнопок просмотра деталей
+            document.querySelectorAll('.action-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const orderId = this.closest('tr').querySelector('td:first-child').textContent;
+                    alert(`Детали заказа ${orderId}. В реальном проекте здесь будет открытие модального окна.`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

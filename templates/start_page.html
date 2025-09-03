@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReFlow - Универсальная реферальная платформа</title>
+    <link rel="stylesheet" href="static/css/start_page_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Шапка с навигацией -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="#"><img  src="static/images/logo_svg.svg" alt="ReFlow" width="100%" height="100px"></a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="#features">Возможности</a></li>
+                        <li><a href="#how-it-works">Как это работает</a></li>
+                        <li><a href="#benefits">Преимущества</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                    <div class="burger-menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <a href="#login" class="btn-login">Войти</a>
+                    <a href="#registration" class="btn-register">Регистрация</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero секция -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">Умножайте продажи. Автоматически. 
+                    </h1>
+                    <p class="hero-subtitle">Забудьте о рутине, реферальные клиенты 24/7 в один клик!</p>
+                    <div class="cta-buttons">
+                        <a href="{{ url_for('start_menu') }}" class="btn btn-primary">Начать зарабатывать</a>
+                        <!-- <a href="#learn-more" class="btn btn-secondary">Узнать больше</a> -->
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <!-- Графический элемент будет на фоне через CSS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок проблем и решений -->
+    <section class="problems-section">
+        <div class="container">
+            <h2 class="section-title">Хватит терять время и деньги</h2>
+            <div class="problems-grid">
+                <div class="card">
+                    <h3 class="problem-title">Поиск предложений</h3>
+                    <p class="problem-desc">Тратите часы на поиск подходящих программ</p>
+                    <div class="solution">
+                        <h4 class="solution-title">Решение ReFlow:</h4>
+                        <p class="solution-desc">Тысячи товаров из одного каталога. Экономьте до 50% времени.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 class="problem-title">Задержки выплат</h3>
+                    <p class="problem-desc">Нерегулярные и непредсказуемые выплаты</p>
+                    <div class="solution">
+                        <h4 class="solution-title">Решение ReFlow:</h4>
+                        <p class="solution-desc">Автоматические выплаты на карту РФ или юр. лицу. Гарантия своевременности.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 class="problem-title">Сложная аналитика</h3>
+                    <p class="problem-desc">Трудно отслеживать эффективность кампаний</p>
+                    <div class="solution">
+                        <h4 class="solution-title">Решение ReFlow:</h4>
+                        <p class="solution-desc">Понятный личный кабинет с данными о доходах, конверсии и ROI. Экономия до 10 часов в неделю.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок выгод для партнеров -->
+    <section class="benefits-section">
+        <div class="container">
+            <h2 class="section-title">Один аккаунт — тысячи возможностей</h2>
+            <div class="benefits-grid">
+                <div class="card">
+                    <h3 class="benefit-title">Каталог товаров</h3>
+                    <p class="benefit-desc">Доступ к тысячам товаров и услуг из разных ниш в одном месте.</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="benefit-title">Рост дохода</h3>
+                    <p class="benefit-desc">Увеличьте средний чек на 20% за счет разнообразия предложений.</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="benefit-title">Масштабирование</h3>
+                    <p class="benefit-desc">Легко сотрудничайте с десятками брендов одновременно без отдельных договоров.</p>
+                </div>
+                
+                <div class="card">
+                    <h3 class="benefit-title">Все бесплатно</h3>
+                    <p class="benefit-desc">Для партнеров использование платформы — 0 рублей.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок "Как это работает" -->
+    <section class="mechanics-section">
+        <div class="container">
+            <!-- Для бизнесов -->
+            <div class="card mechanics-business">
+                <h2 class="section-title">Автоматизируйте реферальные продажи и экономьте ресурсы</h2>
+                <p class="section-subtitle">Запустите мощную партнерскую программу за несколько часов, а не недель.</p>
+                
+                <div class="key-fact">
+                    <span class="fact-text">ReFlow экономит бизнесам до 500 000 руб./год на операционных расходах и комиссиях.</span>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-step">1</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Регистрация и добавление товаров</h3>
+                            <p class="timeline-desc">Создайте аккаунт, загрузите товары или услуги и установите размер комиссии для партнеров.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">2</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Привлечение партнеров</h3>
+                            <p class="timeline-desc">Найдите подходящих аффилиатов в нашем каталоге или пригласите своих.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">3</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Автоматизация процессов</h3>
+                            <p class="timeline-desc">Система сама сгенерирует ссылки, отследит продажи и рассчитает комиссии.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">4</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Рост и аналитика</h3>
+                            <p class="timeline-desc">Получайте чистую прибыль, а мы автоматически переведем комиссию партнерам. Анализируйте эффективность каналов в реальном времени.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">-15%</div>
+                        <div class="stat-label">операционных издержек</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">+25-40%</div>
+                        <div class="stat-label">к реферальным продажам в первый год</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">Запуск за 1 день</div>
+                        <div class="stat-label">вместо недель</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Для партнеров -->
+            <div class="card mechanics-partners">
+                <h2 class="section-title">Зарабатывайте на рекомендациях без хлопот</h2>
+                <p class="section-subtitle">Получайте стабильный доход, рекомендуя тысячи товаров из единого каталога.</p>
+                
+                <div class="key-fact">
+                    <span class="fact-text">68% продавцов на маркетплейсах используют реферальные программы. Ваша аудитория — ваш капитал.</span>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-step">1</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Бесплатная регистрация</h3>
+                            <p class="timeline-desc">Создайте аккаунт за 2 минуты. Для вас платформа всегда бесплатна.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">2</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Выбор товаров</h3>
+                            <p class="timeline-desc">Найдите выгодные предложения в каталоге или принимайте приглашения от брендов.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">3</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Размещение ссылки</h3>
+                            <p class="timeline-desc">Используйте уникальные ссылки и промокоды для своей аудитории в соцсетях, на сайте или в мессенджерах.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-step">4</div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">Автоматические выплаты</h3>
+                            <p class="timeline-desc">Система автоматически начислит комиссию за каждую продажу. Получайте деньги быстро и без задержек.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">0%</div>
+                        <div class="stat-label">риск невыплат</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">+20%</div>
+                        <div class="stat-label">к среднему чеку</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">Экономия 10+ часов/неделю</div>
+                        <div class="stat-label">на ручном учете и переговорах</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок статистики и фактов -->
+    <section class="stats-section">
+        <div class="container">
+            <h2 class="section-title">ReFlow в цифрах</h2>
+            <div class="stats-container">
+                <div class="card stat-circle">
+                    <div class="stat-number">0%</div>
+                    <div class="stat-desc">риск невыплат. Гарантия платформы.</div>
+                </div>
+                <div class="card stat-circle">
+                    <div class="stat-number">10+ часов</div>
+                    <div class="stat-desc">экономия времени еженедельно на рутине.</div>
+                </div>
+                <div class="card stat-circle">
+                    <div class="stat-number">5%</div>
+                    <div class="stat-desc">средний размер вашей комиссии с каждой продажи.</div>
+                </div>
+                <div class="card stat-circle">
+                    <div class="stat-number">200 000+</div>
+                    <div class="stat-desc">активных партнеров на рынке РФ, для которых мы создаем решение.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок FAQ -->
+    <section class="faq-section">
+    <div class="container">
+        <h2 class="section-title">Часто задаваемые вопросы</h2>
+        <div class="faq-list">
+            <div class="card faq-item">
+                <button class="faq-question">
+                    <span>Сколько стоит регистрация и использование для партнера?</span>
+                    <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Это абсолютно бесплатно. Вы платите только налог с полученного дохода по законам РФ.
+                    </div>
+                </div>
+            </div>
+            <div class="card faq-item">
+                <button class="faq-question">
+                    <span>Как быстро происходят выплаты?</span>
+                    <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Выплаты происходят автоматически в течение 1-3 рабочих дней после подтверждения продажи продавцом.
+                    </div>
+                </div>
+            </div>
+            <div class="card faq-item">
+                <button class="faq-question">
+                    <span>С какими площадками интегрирована платформа?</span>
+                    <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Ozon, Wildberries, Яндекс Маркет, а также любые интернет-магазины через API.
+                    </div>
+                </div>
+            </div>
+            <div class="card faq-item">
+                <button class="faq-question">
+                    <span>Что такое ReFlow?</span>
+                    <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Это автоматизированная платформа для реферального маркетинга. Она соединяет бизнесы с партнерами (блогерами, каналами) и автоматизирует весь процесс: от поиска до выплат.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card faq-item">
+                <button class="faq-question">
+                    <span>Чем ReFlow лучше конкурентов?</span>
+                    <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Низкая комиссия (5%), автовыплаты в рублях, глубокая интеграция с маркетплейсами (Ozon, WB) и полная автоматизация.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card faq-item">
+                <button class="faq-question">
+                    <span>Сколько стоит использование для бизнеса?</span>
+                    <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Абонентская плата 3 000 ₽/мес (после первого бесплатного месяца) + комиссия 5% с продажи.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card faq-item">
+                <button class="faq-question">
+                    <span>Сколько стоит использование для партнера?</span>
+                    <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Это абсолютно бесплатно. Партнеры получают всю назначенную им комиссию.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card faq-item">
+                <button class="faq-question">
+                    <span>Как происходят выплаты партнерам?</span>
+                    <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Автоматически. После продажи система сама рассчитывает комиссию и переводит деньги на ваш счет через интегрированные платежные системы (ЮKassa, Тинькофф).
+                    </div>
+                </div>
+            </div>
+
+            <div class="card faq-item">
+                <button class="faq-question">
+                    <span>С какими площадками вы интегрируетесь?</span>
+                    <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Прямая интеграция с API Ozon, Wildberries, Яндекс Маркет. А также с CRM, 1C и сайтами для работы со всеми каналами продаж.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card faq-item">
+                <button class="faq-question">
+                    <span>Кто ваша целевая аудитория?</span>
+                    <svg class="faq-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Бизнесы, продающие на маркетплейсах, и партнеры (владельцы Telegram-каналов, блогеры), которые хотят monetize свою аудиторию.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Финальный призыв к действию -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="card cta-card">
+                <h2 class="section-title">Начните зарабатывать с проверенными брендами уже сегодня</h2>
+                <p class="cta-text">Присоединяйтесь к сообществу партнеров, которые ценят свое время и уверены в завтрашнем дне.</p>
+                <a href="#registration" class="btn btn-primary">Зарегистрироваться бесплатно →</a>
+                <p class="cta-note">Это займет менее 2 минут. Без скрытых условий.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">ReFlow</div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">О нас</a>
+                    <a href="#" class="footer-link">Контакты</a>
+                    <a href="#" class="footer-link">Политика конфиденциальности</a>
+                    <a href="#" class="footer-link">Условия использования</a>
+                </div>
+                <div class="footer-copyright">© 2025 ReFlow. Все права защищены.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript" src="https://auth.robokassa.ru/Merchant/bundle/robokassa_iframe.js"></script>
+    <script>
+        // Бургер меню для мобильных устройств
+    document.addEventListener('DOMContentLoaded', function() {
+        // Находим элементы
+        const burgerMenu = document.querySelector('.burger-menu');
+        const navList = document.querySelector('.nav-list');
+        const body = document.body;
+
+        // Функция для открытия/закрытия меню
+        function toggleMenu() {
+            burgerMenu.classList.toggle('active');
+            navList.classList.toggle('active');
+            
+            // Блокируем прокрутку тела при открытом меню
+            if (navList.classList.contains('active')) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = '';
+            }
+        }
+
+        // Вешаем обработчик на клик по бургеру
+        burgerMenu.addEventListener('click', toggleMenu);
+
+        // Закрываем меню при клике на пункт меню (для якорных ссылок)
+        const navLinks = document.querySelectorAll('.nav-list a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                // Закрываем меню только если оно открыто (на мобильном)
+                if (navList.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+        });
+
+        // Закрываем меню при клике вне его области
+        document.addEventListener('click', function(event) {
+            const isClickInsideNav = navList.contains(event.target) || burgerMenu.contains(event.target);
+            
+            if (!isClickInsideNav && navList.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // (Опционально) Можно добавить эффект изменения прозрачности шапки при скролле
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.style.backgroundColor = 'rgba(12, 11, 28, 0.01)'; // Менее прозрачный при скролле
+            } else {
+                header.style.backgroundColor = 'rgba(12, 11, 28, 0.95)'; // Изначальная прозрачность
+        }
+    });
+        });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    // Функция для открытия/закрытия FAQ
+    function toggleFaq(item) {
+        const isActive = item.classList.contains('active');
+        
+        // Закрываем все элементы
+        faqItems.forEach(faq => {
+            faq.classList.remove('active');
+        });
+        
+        // Если элемент не был активен - открываем его
+        if (!isActive) {
+            item.classList.add('active');
+        }
+    }
+    
+    // Вешаем обработчики на клик
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => toggleFaq(item));
+    });
+    
+    // Анимация появления при скролле (опционально)
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, 100 * Array.from(faqItems).indexOf(entry.target));
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    faqItems.forEach(item => {
+        observer.observe(item);
+    });
+});
+
+    </script>
+</body>
+</html>

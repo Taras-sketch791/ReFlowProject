@@ -1,0 +1,70 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+<div class="client-profile">
+    <div class="profile-header">
+        <div class="profile-info">
+            <h1>{{ client_name }}</h1>
+            <div class="profile-actions">
+                <a href="{{ url_for('client_settings') }}" class="btn btn-outline-green">
+                    Настройки
+                </a>
+                <a href="{{ url_for('client_logout') }}" class="btn btn-outline-green">
+                    Выйти
+                </a>
+            </div>
+        </div>
+
+        <div class="profile-stats">
+            <div class="stat-card">
+                <div class="stat-value">{{ referrals_count }}</div>
+                <div class="stat-label">Реферальных ссылок</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ "%.2f"|format(total_earnings) }} ₽</div>
+                <div class="stat-label">Заработано</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-content">
+        <section class="quick-actions">
+            <h2>Быстрые действия</h2>
+            <div class="action-grid">
+                <a href="{{ url_for('client_products') }}" class="action-card">
+                    <div class="action-icon">🔍</div>
+                    <h3>Найти товары</h3>
+                    <p>Создавайте новые реферальные ссылки</p>
+                </a>
+
+                <a href="{{ url_for('client_referrals') }}" class="action-card">
+                    <div class="action-icon">📊</div>
+                    <h3>Мои ссылки</h3>
+                    <p>Управляйте вашими реферальными ссылками</p>
+                </a>
+
+                <a href="{{ url_for('client_withdraw') }}" class="action-card">
+                    <div class="action-icon">💰</div>
+                    <h3>Вывод средств</h3>
+                    <p>Запросите выплату вашего заработка</p>
+                </a>
+            </div>
+        </section>
+
+        <section class="recent-activity">
+            <h2>Последняя активность</h2>
+            <div class="activity-list">
+                <!-- Здесь будет список последних действий -->
+                <div class="activity-item">
+                    <div class="activity-icon">🔄</div>
+                    <div class="activity-text">
+                        <p>Новый переход по вашей ссылке</p>
+                        <small>2 часа назад</small>
+                    </div>
+                    <div class="activity-amount">+50 ₽</div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

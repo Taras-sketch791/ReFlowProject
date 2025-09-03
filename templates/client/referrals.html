@@ -1,0 +1,41 @@
+{% extends "client/client.html" %}
+
+{% block content %}
+<div class="client-referrals">
+    <h1>Ваши реферальные ссылки</h1>
+
+    <div class="referrals-list">
+        {% for referral in referrals %}
+        {% set product = products|selectattr('id', 'equalto', referral.product_id)|first %}
+        <div class="referral-card">
+            <div class="product-info">
+                <h3>{{ referral.product_title }}</h3>
+                <p class="price">{{ referral.price }} ₽</p>
+                <p class="referral-percent">Ваш процент: {{ referral.referral_percent }}%</p>
+            </div>
+            <div class="referral-info">
+                <div class="referral-link">
+                    <input type="text" value="{{ referral.link }}" readonly id="link-{{ referral.id }}">
+                    <button onclick="copyLink('link-{{ referral.id }}')" class="btn btn-small btn-blue">
+                        Копировать
+                    </button>
+                </div>
+                <div class="qr-code">
+                    <!-- Здесь будет QR-код -->
+                    <div class="qr-placeholder"></div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+function copyLink(elementId) {
+    const copyText = document.getElementById(elementId);
+    copyText.select();
+    document.execCommand("copy");
+    alert("Ссылка скопирована: " + copyText.value);
+}
+</script>
+{% endblock %}

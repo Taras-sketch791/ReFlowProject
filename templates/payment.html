@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата покупки</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="tel"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .card-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .card-icons img {
+            height: 30px;
+        }
+        .expiry-cvv {
+            display: flex;
+            gap: 20px;
+        }
+        .expiry-cvv .form-group {
+            flex: 1;
+        }
+        .expiry-date {
+            display: flex;
+            gap: 10px;
+        }
+        .expiry-date select {
+            flex: 1;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .secure-payment {
+            text-align: center;
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        .secure-payment img {
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .order-summary {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .order-summary h3 {
+            margin-top: 0;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .total {
+            font-weight: bold;
+            border-top: 1px solid #ddd;
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Оплата покупки</h1>
+
+        <div class="order-summary">
+            <h3>Детали заказа</h3>
+            <div class="summary-row">
+                <span>Товар:</span>
+                <span>Название товара</span>
+            </div>
+            <div class="summary-row">
+                <span>Количество:</span>
+                <span>1</span>
+            </div>
+            <div class="summary-row">
+                <span>Цена:</span>
+                <span>5 000 ₽</span>
+            </div>
+            <div class="summary-row">
+                <span>Доставка:</span>
+                <span>Бесплатно</span>
+            </div>
+            <div class="summary-row total">
+                <span>Итого:</span>
+                <span>5 000 ₽</span>
+            </div>
+        </div>
+
+        <form id="payment-form">
+            <div class="form-group">
+                <label for="card-number">Номер карты</label>
+                <input type="text" id="card-number" placeholder="1234 5678 9012 3456" required>
+                <div class="card-icons">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visa/visa-original.svg" alt="Visa">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mastercard/mastercard-original.svg" alt="Mastercard">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" alt="Apple Pay">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="card-name">Имя владельца карты</label>
+                <input type="text" id="card-name" placeholder="IVAN IVANOV" required>
+            </div>
+
+            <div class="expiry-cvv">
+                <div class="form-group">
+                    <label>Срок действия</label>
+                    <div class="expiry-date">
+                        <select id="expiry-month" required>
+                            <option value="" disabled selected>Месяц</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <select id="expiry-year" required>
+                            <option value="" disabled selected>Год</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cvv">CVV/CVC</label>
+                    <input type="text" id="cvv" placeholder="123" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email для чека</label>
+                <input type="email" id="email" placeholder="example@mail.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" required>
+            </div>
+
+            <button type="submit">Оплатить 5 000 ₽</button>
+        </form>
+
+        <div class="secure-payment">
+            <img src="https://simpleicon.com/wp-content/uploads/lock-2.png" alt="Lock" width="16">
+            Ваши данные защищены. Мы используем 256-битное SSL-шифрование.
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Здесь должна быть логика обработки платежа
+            alert('Платеж обрабатывается...');
+            // В реальном приложении здесь был бы вызов платежного API
+        });
+
+        // Маска для номера карты
+        document.getElementById('card-number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formatted = value.replace(/(\d{4})/g, '$1 ').trim();
+            e.target.value = formatted;
+        });
+
+        // Маска для телефона
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            let formatted = '+7 (';
+            if (value.length > 1) {
+                formatted += value.substring(1, Math.min(4, value.length));
+            }
+            if (value.length >= 4) {
+                formatted += ') ' + value.substring(4, Math.min(7, value.length));
+            }
+            if (value.length >= 7) {
+                formatted += '-' + value.substring(7, Math.min(9, value.length));
+            }
+            if (value.length >= 9) {
+                formatted += '-' + value.substring(9, Math.min(11, value.length));
+            }
+            e.target.value = formatted;
+        });
+    </script>
+</body>
+</html>

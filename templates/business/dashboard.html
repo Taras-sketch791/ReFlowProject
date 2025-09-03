@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReFlow - Панель управления бизнесом</title>
+    <link rel="stylesheet" href="base_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Дополнительные стили для страницы бизнеса */
+        .business-dashboard {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+
+        /* Боковое меню */
+        .sidebar {
+            width: 250px;
+            background: var(--auth-card-bg);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--auth-card-border);
+            padding: 1.5rem 0;
+            position: fixed;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            z-index: 900;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            padding: 0.8rem 1.5rem;
+            color: var(--platinum-text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: rgba(0, 194, 179, 0.1);
+            border-left-color: var(--primary-blue);
+            color: var(--accent-cyan);
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Основной контент */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .business-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .business-info {
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--platinum-text);
+            font-size: 0.9rem;
+        }
+
+        .dashboard-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--platinum-text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-settings {
+            background: var(--btn-auth-gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-settings:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 194, 179, 0.3);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .menu-item span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 1000;
+                background: var(--primary-blue);
+                color: white;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="#"><img src="static/images/logo_svg.svg" alt="ReFlow" width="100%" height="100px"></a>
+                </div>
+                <div class="header-actions">
+                    <a href="#login" class="btn-login">Выйти</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="business-dashboard">
+        <!-- Боковое меню -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#" class="menu-item active"><i class="fas fa-chart-line"></i> <span>Аналитика</span></a></li>
+                <li><a href="#" class="menu-item"><i class="fas fa-shopping-cart"></i> <span>Продажи</span></a></li>
+                <li><a href="#" class="menu-item"><i class="fas fa-users"></i> <span>Партнеры</span></a></li>
+                <li><a href="#" class="menu-item"><i class="fas fa-tag"></i> <span>Товары</span></a></li>
+                <li><a href="#" class="menu-item"><i class="fas fa-comments"></i> <span>Чаты</span></a></li>
+                <li><a href="#" class="menu-item"><i class="fas fa-user"></i> <span>Профиль</span></a></li>
+                <li><a href="#" class="menu-item"><i class="fas fa-cog"></i> <span>Настройки</span></a></li>
+                <li><a href="#" class="menu-item"><i class="fas fa-credit-card"></i> <span>Настроить оплату</span></a></li>
+                <li><a href="#" class="menu-item"><i class="fas fa-question-circle"></i> <span>Справочный центр</span></a></li>
+                <li><a href="#" class="menu-item"><i class="fas fa-headset"></i> <span>Тех. поддержка</span></a></li>
+            </ul>
+        </aside>
+
+        <!-- Основной контент -->
+        <main class="main-content">
+            <div class="business-header">
+                <h1>ООО "ТехноПром"</h1>
+                <button class="btn-settings"><i class="fas fa-cog"></i> Настройки профиля</button>
+            </div>
+
+            <div class="card business-info">
+                <h2 class="section-title"><i class="fas fa-info-circle"></i> Информация о бизнесе</h2>
+                <p>Производитель и поставщик электронных компонентов и оборудования. Работаем на рынке с 2015 года.</p>
+
+                <div class="requisites" style="margin-top: 1.5rem;">
+                    <h3>Реквизиты:</h3>
+                    <p><strong>ИНН:</strong> 7701234567</p>
+                    <p><strong>КПП:</strong> 770101001</p>
+                    <p><strong>ОГРН:</strong> 1157746012345</p>
+                    <p><strong>Юридический адрес:</strong> г. Москва, ул. Примерная, д. 123, оф. 456</p>
+                    <p><strong>Расчетный счет:</strong> 40702810123456789012</p>
+                    <p><strong>Банк:</strong> ПАО "Примерный Банк"</p>
+                    <p><strong>БИК:</strong> 044525123</p>
+                    <p><strong>Корр. счет:</strong> 30101123456789012345</p>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-value">257 843 ₽</div>
+                    <div class="stat-label">Баланс счета</div>
+                </div>
+
+                <div class="card stat-card">
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Активные партнеры</div>
+                </div>
+
+                <div class="card stat-card">
+                    <div class="stat-value">128</div>
+                    <div class="stat-label">Продаж за месяц</div>
+                </div>
+
+                <div class="card stat-card">
+                    <div class="stat-value">15.7%</div>
+                    <div class="stat-label">Конверсия</div>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2 class="section-title"><i class="fas fa-chart-bar"></i> Статистика продаж</h2>
+                <div class="card">
+                    <p>Здесь будет график и детальная статистика по продажам. Можно добавить фильтры по периодам, категориям товаров и партнерам.</p>
+                    <!-- В реальном проекте здесь будет график или таблица -->
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2 class="section-title"><i class="fas fa-user-friends"></i> Топ партнеры</h2>
+                <div class="card">
+                    <p>Список самых эффективных партнеров с показателями их продаж и комиссиями.</p>
+                    <!-- В реальном проекте здесь будет таблица с партнерами -->
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2 class="section-title"><i class="fas fa-cube"></i> Популярные товары</h2>
+                <div class="card">
+                    <p>Список товаров с наибольшим количеством продаж через партнерскую программу.</p>
+                    <!-- В реальном проекте здесь будет таблица с товарами -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Кнопка мобильного меню (только для мобильных) -->
+    <div class="menu-toggle" style="display: none;">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <script>
+        // Переключение мобильного меню
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+
+            if (menuToggle && sidebar) {
+                menuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                });
+            }
+
+            // Активация пунктов меню
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{% extends "business/business.html" %}
+
+{% block content %}
+<div class="business-portal">
+    <div class="portal-header">
+        <h1>Панель управления бизнесом</h1>
+        <p>Используйте ваши учетные данные для входа</p>
+    </div>
+
+    <div class="portal-options">
+        <a href="{{ url_for('business_login') }}" class="portal-card">
+            <div class="card-icon">🔐</div>
+            <h3>Вход в аккаунт</h3>
+            <p>Уже зарегистрированы? Войдите в систему</p>
+        </a>
+
+        <a href="{{ url_for('business_register') }}" class="portal-card">
+            <div class="card-icon">📝</div>
+            <h3>Регистрация</h3>
+            <p>Новый бизнес? Создайте аккаунт</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

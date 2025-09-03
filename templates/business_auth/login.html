@@ -1,0 +1,46 @@
+{% extends "business_auth/base_business_auth.html" %}
+
+{% block title %}Вход для бизнеса{% endblock %}
+
+{% block auth_content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Вход для Бизнеса</h1>
+            <p>Войдите в свой аккаунт для управления продуктами</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="auth-form">
+            <div class="form-group">
+                <label for="inn" class="form-label">ИНН</label>
+                <input type="text" class="form-control" id="inn" name="inn" required 
+                       placeholder="Введите ИНН вашей компании">
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="password" name="password" required 
+                       placeholder="Введите ваш пароль">
+            </div>
+
+            <button type="submit" class="auth-btn auth-btn-primary">
+                Войти в аккаунт
+            </button>
+        </form>
+
+        <div class="auth-links">
+            <p>Нет аккаунта? <a href="{{ url_for('business_auth.register_page') }}">Зарегистрироваться</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
