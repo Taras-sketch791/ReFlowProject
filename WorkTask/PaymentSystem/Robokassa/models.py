@@ -6,8 +6,7 @@ from typing import Optional, Dict
 
 class PaymentStatus(Enum):
     CREATED = "created"
-    PROCESSING = "processing"
-    COMPLETED = "completed"
+    PAID = "paid"
     FAILED = "failed"
     
 
