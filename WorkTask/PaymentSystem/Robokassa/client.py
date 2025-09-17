@@ -21,6 +21,7 @@ robokassa = Robokassa(
 my_link = robokassa.generate_open_payment_link(out_sum=100, inv_id=1)
 
 '''
+API_STATUS_URL = ''
 
 class RobokassaClient:
     
@@ -33,107 +34,98 @@ class RobokassaClient:
         timeout: int = 30,
         logger: list[logging.Logger] = None
     ) -> None:
-      pass
+        self.merchant_login = merchant_login
+        self.password1 = password1
+        self.password2 = password2
+        self.is_test = is_test
+        self.timeout = timeout
+        self.logger = logger or logging.getLogger(__name__)
 
-# Формирую url
-def get_payment_url(
-        self,
-        merchant_login,
-        password1,
-        invoice_id: list[int, str],
-        amount: list[float, str, Decimal],
-        description: str,
-        currency: str = "RUB",
-        email: list[str] = None,
-        culture: str = "ru",
-        is_test: bool = True,
-        **additional_params,
-    ) -> str:
-
-    amount_dec = f"{Decimal(str(amount)):.2f}"
-
-    signature = _calculate_signature(merchant_login, amount_dec, invoice_id, password1)
-
-    all_date={
-        'MerchantLogin' : merchant_login,
-        'OutSum' : amount_dec,
-        'InvId' : invoice_id,
-        'Description' : description,
-        'SignatureValue':  signature,
-#        'Culture' : culture,
-#        'Email' : email,
-        'IsTest': is_test
-    }
-
-    return f'{self.payment_url}?{parse.urlencode(all_date)}'
-
-
-# Формированаие signature
-def _calculate_signature(self, *values: any) -> str:
-    string_to_hash = ':'.join(str(arg) for arg in values)
-    signature = hashlib.md5(string_to_hash.encode('utf-8')).hexdigest()
-    return signature
-
-
-# Парсим данные из request и помещаем их в dict 
-def parse_response(request: str) -> dict:
-    params = {}
-
-    for item in urlparse(request).query.split('&'):
-        key, value = item.split('=')
-        params[key] = value
-        for i,k in params.items():
-            print(i, ' = ', k)
-    return params
-
-
-# Сравнивает сформированную сигнатуру с полученной от robokassa
-def check_signature_result(
-    invoice_id: int,  # invoice number
-    amount: decimal,  # cost of goods, RU
-    received_signature: hex,  # SignatureValue
-    password1: str  # Merchant password
-) -> bool:
-    signature = _calculate_signature(amount, invoice_id, password1)
-    if signature.lower() == received_signature.lower():
-        return True
-    return False
-
-
-# Получение уведомления об исполнении операции (SuccessURL).
-def verify_callback_signature(
-    invoice_id: int,  # invoice number
-    amount: Decimal,  # cost of goods, RU
-    received_signature: hex,  # SignatureValue
-    password1: str, # Merchant password
-    request
-) -> bool:
+    # Формирую url
+    def get_payment_url(
+            self,
+            invoice_id: list[int, str],
+            amount: list[float, str, Decimal],
+            description: str,
+            currency: str = "RUB",
+            email: list[str] = None,
+            culture: str = "ru",
+            is_test: bool = True,
+            **additional_params,
+        ) -> str:
+                    
+            validate_payment_parameters(invoice_id, amount, description)
     
-    param_request = parse_response(request)
-
-    amount = param_request['OutSum']
-    invoice_id = param_request['InvId']
-    signature = param_request['SignatureValue']
+            signature = _calculate_signature_arg(
+                self.merchant_login, amount, invoice_id, self.password1)
     
-    if check_signature_result(invoice_id, amount, signature, password1):
-        return "Thank you for using our service"
-    return "bad sign"
-
-
-# После сравнения signature формируем ответ для РобоКассы (ResultURL)
-def get_payment_status(
-    password2: str,  # Merchant password
-    request,
-) -> bool:
+            all_date={
+            'MerchantLogin' : self.merchant_login,
+            'OutSum' : amount,
+            'InvId' : invoice_id,
+            'Description' : description,
+            'SignatureValue':  signature,
+            'Culture' : culture,
+    #        'Email' : email,
+        }
+            if email:
+                all_date['Email'] = email
     
-    param_request = parse_response(request) # Получаем словарь из parse_response
+            return f'{self.payment_url}?{parse.urlencode(all_date)}'
+    
+    
+    # Формированаие signature
+    def _calculate_signature(self, *values: any) -> str:
+        string_to_hash = ':'.join(str(arg) for arg in values)
+        signature = hashlib.md5(string_to_hash.encode('utf-8')).hexdigest()
+        return signature
+    
+# Возвращаем статус по InvoiceId
+    def get_payment_status_args(
+            self,
+            invoice_id: Union[int, str],
+            amount: Optional[Union[float, str, Decimal]] = None
+        ) -> PaymentStatus:
+            try:
+                response = requests.get(API_STATUS_URL,
+                                        params={
+                        'InvoiceId' : invoice_id
+                                        })
+                response.raise_for_status()
+                date = response.json()
+                status = date.get('InvoiceStatuses')
+                if status.lower() == 'paid':
+                    return PaymentStatus.PAID
+                else:
+                     return PaymentStatus.CREATED
+            except Exception as e:
+                return 'Error'
+    
+    # Список платежей по параметрам
+    def get_payments_list(self,
+                        date_from: datetime,
+                        date_to: datetime, 
+                        status: Optional[PaymentStatus] = None,
+                        limit: int = 100,
+                        offset: int = 0) -> List[Payment]:
+            try:
+                resp = requests.get(
+                    API_STATUS_URL,
+                        params={
+                            "DateFrom": date_from,
+                            "DateTo": date_to,
+                            "Status": status,
+                            "Limit": limit,
+                            "Offset": offset
+                            },
+                        timeout=self.timeout,
+                )
+    
+                resp.raise_for_status()
+                data = resp.json()
+                return [Payment(**payment) for payment in data]
+            except Exception as e:
+                raise APIError(f"Failed to get payments list: {e}")
 
-    amount = param_request['OutSum']
-    invoice_id = param_request['InvId']
-    signature = param_request['SignatureValue']
-
-    if check_signature_result(invoice_id, amount, signature, password2): # Сравнивааем 
-        return f'OK{param_request["InvId"]}'
-    return "bad sign"
 
 
